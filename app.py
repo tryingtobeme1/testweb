@@ -34,7 +34,7 @@ class BrowserHandler:
         chrome_options.add_experimental_option("useAutomationExtension", False)
         
         # Add Chrome binary location for server environment
-        chrome_options.binary_location = "/usr/bin/google-chrome"
+        chrome_options.binary_location = "/opt/render/project/.render/chrome"
         chromedriver_path = "/opt/render/project/chromedriver"
 
         try:
@@ -271,51 +271,4 @@ def search():
     location = request.form.get('location', '').strip()
 
     vehicles = [
-        {'make': 'Toyota', 'model': 'Corolla', 'year': '2015', 'location': 'Ottawa'},
-        {'make': 'Honda', 'model': 'Civic', 'year': '2018', 'location': 'Cornwall'},
-        {'make': 'Ford', 'model': 'Focus', 'year': '2016', 'location': 'Gatineau'},
-    ]
-
-    filtered_vehicles = [
-        vehicle for vehicle in vehicles
-        if (make.lower() in vehicle['make'].lower() or not make) and
-           (model.lower() in vehicle['model'].lower() or not model) and
-           (year == vehicle['year'] or not year) and
-           (location.lower() in vehicle['location'].lower() or not location)
-    ]
-
-    return jsonify(filtered_vehicles)
-
-@app.route('/scrape/<location>', methods=['GET'])
-def scrape(location):
-    scraper = KennyUPullScraper(location)
-    try:
-        inventory = scraper.scrape_page()
-        return jsonify({location: inventory})
-    except Exception as e:
-        return jsonify({"error": str(e)})
-    finally:
-        scraper.close()
-
-@app.route('/scrape_ebay/<vehicle_title>', methods=['GET'])
-def scrape_ebay(vehicle_title):
-    scraper = EbayScraper()
-    try:
-        data = scraper.scrape_sold_items(vehicle_title)
-        return jsonify(data)
-    except Exception as e:
-        return jsonify({"error": str(e)})
-    finally:
-        scraper.close()
-
-@app.route('/scrape_with_filters', methods=['GET'])
-def scrape_with_filters():
-    make = request.args.get('make')
-    model = request.args.get('model')
-    year = request.args.get('year')
-    vehicle_title = f"{make} {model} {year}".strip()
-    print(f"[INFO] Starting scrape with filters: Make={make}, Model={model}, Year={year}")
-    return scrape_ebay(vehicle_title)
-
-if __name__ == '__main__':
-    app.run(debug=True, use_reloader=False)
+        {'
