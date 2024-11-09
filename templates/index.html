@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vehicle Search</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <script defer src="/static/js/script.js"></script>
+</head>
+<body>
+    <header>
+        <h1>Vehicle Inventory Search</h1>
+    </header>
+    <main>
+        <div class="filter-section">
+            <form id="filter-form">
+                <label for="make">Make:</label>
+                <input type="text" id="make" name="make" placeholder="e.g., Toyota">
+
+                <label for="model">Model:</label>
+                <input type="text" id="model" name="model" placeholder="e.g., Corolla">
+
+                <label for="year">Year:</label>
+                <input type="number" id="year" name="year" placeholder="e.g., 2015">
+
+                <button type="button" id="search-button">Search Inventory</button>
+            </form>
+        </div>
+        <div class="location-buttons">
+            <button type="button" id="ottawa-button">Search Ottawa</button>
+            <button type="button" id="cornwall-button">Search Cornwall</button>
+            <button type="button" id="gatineau-button">Search Gatineau</button>
+            <button type="button" id="all-locations-button">Search All Locations</button>
+        </div>
+        <div id="results" class="vehicle-grid">
+            <!-- Vehicle cards will be displayed here -->
+        </div>
+    </main>
+</body>
+</html>

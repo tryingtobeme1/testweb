@@ -1,0 +1,171 @@
+/* Base styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f8f8;
+    color: #333;
+}
+
+/* Header styles */
+header {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 20px 0;
+}
+
+/* Vehicle Grid */
+.vehicle-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
+
+/* Vehicle Card */
+.vehicle-card {
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border: 1px solid #ddd;
+    transition: transform 0.2s ease-in-out;
+}
+
+.vehicle-card:hover {
+    transform: translateY(-2px);
+}
+
+.vehicle-card h3 {
+    font-size: 1.2em;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+/* Button Container */
+.button-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+    gap: 10px;
+}
+
+/* eBay Link */
+.ebay-link {
+    background-color: #0073e6;
+    color: #fff;
+    padding: 10px 15px;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: background-color 0.2s ease;
+}
+
+.ebay-link:hover {
+    background-color: #005bb5;
+}
+
+/* Analysis Button */
+.analysis-button {
+    background-color: #28a745;
+    color: #fff;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.analysis-button:hover {
+    background-color: #218838;
+}
+
+/* Loading Indicator */
+.loading {
+    text-align: center;
+    padding: 20px;
+    font-style: italic;
+    color: #666;
+}
+
+/* Analysis Container Styles */
+.analysis-container {
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin: 20px;
+}
+
+.analysis-header,
+.analysis-footer {
+    display: flex;
+    align-items: center;
+    margin: 10px 0;
+    padding: 10px 0;
+}
+
+.back-to-results-btn {
+    padding: 8px 16px;
+    background-color: #f0f0f0;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    margin: 10px 0;
+}
+
+.back-to-results-btn:hover {
+    background-color: #e0e0e0;
+}
+
+/* Analysis Table Styles */
+.analysis-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+.analysis-table th,
+.analysis-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.analysis-table th {
+    background-color: #f5f5f5;
+    font-weight: bold;
+    cursor: pointer;
+    position: relative;
+    padding-right: 25px;
+}
+
+.sort-icon {
+    position: absolute;
+    right: 8px;
+    opacity: 0.5;
+}
+
+.sorted-asc .sort-icon:after {
+    content: '↑';
+    opacity: 1;
+}
+
+.sorted-desc .sort-icon:after {
+    content: '↓';
+    opacity: 1;
+}
+
+.analysis-table tbody tr:hover {
+    background-color: #f8f8f8;
+}
+
+.item-link {
+    color: #0066cc;
+    text-decoration: none;
+}
+
+.item-link:hover {
+    text-decoration: underline;
+}
