@@ -35,10 +35,11 @@ class BrowserHandler:
         
         # Add Chrome binary location for server environment
         chrome_options.binary_location = "/usr/bin/google-chrome"
+        chromedriver_path = "/opt/render/project/chromedriver"
 
         try:
             self.driver = webdriver.Chrome(
-                service=Service(ChromeDriverManager().install()),
+                service=Service(chromedriver_path),
                 options=chrome_options
             )
             print_status("Browser initialized successfully.")
