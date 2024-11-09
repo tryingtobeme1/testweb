@@ -32,6 +32,9 @@ class BrowserHandler:
         chrome_options.add_argument("--disable-blink-features=AutomationControlled")
         chrome_options.add_experimental_option("excludeSwitches", ["enable-automation"])
         chrome_options.add_experimental_option("useAutomationExtension", False)
+        
+        # Add Chrome binary location for server environment
+        chrome_options.binary_location = "/usr/bin/google-chrome"
 
         try:
             self.driver = webdriver.Chrome(
@@ -61,7 +64,6 @@ class KennyUPullScraper:
         self.browser_handler = BrowserHandler()
         self.driver = self.browser_handler.get_driver()
 
-        # Updated URLs with 42 items for all locations, with dynamic filters for make, model, year
         base_url = "https://kennyupull.com/auto-parts/our-inventory/?branch%5B%5D={branch_id}&nb_items=42&sort=date"
         make_filter = f"&input-select-brand-1621770108-auto-parts={make}" if make else ""
         model_filter = f"&input-select-model-661410576-auto-parts={model}" if model else ""
@@ -185,7 +187,6 @@ class EbayScraper:
     def scrape_sold_items(self, vehicle_title, min_price=150, max_price=600):
         print_status(f"Starting eBay scrape for vehicle: {vehicle_title} with price range ${min_price} - ${max_price}...")
         try:
-            # Construct the eBay search URL with filters
             base_url = "https://www.ebay.com/sch/i.html?_nkw={vehicle}&_sacat=0&LH_Sold=1&LH_Complete=1&LH_ItemCondition=4&_ipg=120&rt=nc"
             min_price_filter = f"&_udlo={min_price}" if min_price else ""
             max_price_filter = f"&_udhi={max_price}" if max_price else ""
@@ -201,22 +202,19 @@ class EbayScraper:
 
             items = self.driver.find_elements(By.CSS_SELECTOR, "li.s-item")
             sold_items = []
-            for idx, item in enumerate(items, 1):  # Iterate through all items found
+            for idx, item in enumerate(items, 1):
                 try:
-                    # Attempt to locate the title element
                     try:
                         title = item.find_element(By.CSS_SELECTOR, "h3.s-item__title").text
                     except:
                         title = item.find_element(By.CSS_SELECTOR, "div.s-item__info a").text
 
-                    # Attempt to locate the price element
                     try:
                         price = item.find_element(By.CSS_SELECTOR, ".s-item__price").text
                         price_value = float(re.sub(r'[^0-9.]', '', price))
                     except:
                         price_value = 0.0
 
-                    # Attempt to locate the thumbnail URL and listing link
                     try:
                         thumbnail_url = item.find_element(By.CSS_SELECTOR, "img.s-item__image-img").get_attribute("src")
                         listing_url = item.find_element(By.CSS_SELECTOR, "a.s-item__link").get_attribute("href")
@@ -224,7 +222,6 @@ class EbayScraper:
                         thumbnail_url = ""
                         listing_url = ""
 
-                    # Filter items based on the price range of $150 - $600
                     if 150 <= price_value <= 600:
                         sold_items.append({
                             'item_name': title,
@@ -239,7 +236,6 @@ class EbayScraper:
                     print_status(f"Error processing eBay item {idx}: {str(e)}")
                     continue
 
-            # Analyze sold items
             item_counter = Counter([item['item_name'] for item in sold_items])
             analysis = []
             for item_name, frequency in item_counter.items():
@@ -268,20 +264,17 @@ def home():
 
 @app.route('/search', methods=['POST'])
 def search():
-    # Extract filter parameters from the request
     make = request.form.get('make', '').strip()
     model = request.form.get('model', '').strip()
     year = request.form.get('year', '').strip()
     location = request.form.get('location', '').strip()
 
-    # Example search logic (replace with actual database or API logic)
     vehicles = [
         {'make': 'Toyota', 'model': 'Corolla', 'year': '2015', 'location': 'Ottawa'},
         {'make': 'Honda', 'model': 'Civic', 'year': '2018', 'location': 'Cornwall'},
         {'make': 'Ford', 'model': 'Focus', 'year': '2016', 'location': 'Gatineau'},
     ]
 
-    # Apply filters to vehicles
     filtered_vehicles = [
         vehicle for vehicle in vehicles
         if (make.lower() in vehicle['make'].lower() or not make) and
@@ -294,7 +287,6 @@ def search():
 
 @app.route('/scrape/<location>', methods=['GET'])
 def scrape(location):
-    """Handle scraping requests for Kenny U-Pull locations"""
     scraper = KennyUPullScraper(location)
     try:
         inventory = scraper.scrape_page()
@@ -306,7 +298,6 @@ def scrape(location):
 
 @app.route('/scrape_ebay/<vehicle_title>', methods=['GET'])
 def scrape_ebay(vehicle_title):
-    """Handle eBay scraping requests for a given vehicle title"""
     scraper = EbayScraper()
     try:
         data = scraper.scrape_sold_items(vehicle_title)
@@ -318,7 +309,6 @@ def scrape_ebay(vehicle_title):
 
 @app.route('/scrape_with_filters', methods=['GET'])
 def scrape_with_filters():
-    """Handle scraping requests with filters for make, model, and year"""
     make = request.args.get('make')
     model = request.args.get('model')
     year = request.args.get('year')
